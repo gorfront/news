@@ -1,0 +1,29 @@
+.category__list {
+    width: calc(100% - 60px);
+    margin: 20px 40px;
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.category__list--item {
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all ease-in .25s;
+}
+
+.category__list--item:hover,
+.active {
+    color: #7e1fff;
+    text-transform: underline;
+    border-bottom: 1px solid #7e1fff;
+    transform: scale(1.1);
+    transition: all ease-in .25s;
+}
+
+.category__list--item::first-letter {
+    text-transform: uppercase;
+}

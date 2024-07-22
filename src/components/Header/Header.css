@@ -1,0 +1,35 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: calc(100% - 60px);
+    margin: 10px auto;
+    padding: 10px;
+}
+
+.header--search {
+    width: 300px;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgba(40, 40, 240, 0.801);
+    transition: all ease-in .25s;
+    border-radius: 10px;
+}
+
+.header--search::placeholder {
+    color: #333;
+}
+
+.header--search:hover {
+    border-bottom: 1px solid #7e1fff;
+    transition: all ease-in .25s;
+}
+
+.header--search:active,
+.header--search:visited,
+.header--search:focus {
+    border: 1px solid #7e1fff;
+    transition: all ease-in .25s;
+}
