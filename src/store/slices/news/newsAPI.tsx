@@ -13,20 +13,22 @@ interface Article {
 	description: string;
 }
 
-const API_KEY = "f648e8a4efc342cda618b31b28bd6884";
+// a4470fed925744239c6f02485bab219e , f648e8a4efc342cda618b31b28bd6884
+
+const API_KEY = "a4470fed925744239c6f02485bab219e";
 
 export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 	"news/fetchNews",
 	async ({ text, from, to, category }) => {
-		console.log(category);
-
 		if (category.length > 0) {
 			try {
 				const requests = category.map(el =>
 					axios.get(
 						`https://newsapi.org/v2/top-headlines?q=${
 							text ? text : "a"
-						}&country=us&category=${el?.text}&apiKey=${API_KEY}`
+						}&country=us&category=${
+							el?.text
+						}&from=${from}&to=${to}&apiKey=${API_KEY}`
 					)
 				);
 
@@ -35,7 +37,6 @@ export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 					response => response.data.articles
 				);
 
-				console.log(combinedData);
 				return combinedData;
 			} catch (error) {
 				console.error("Error fetching news:", error);
@@ -44,16 +45,19 @@ export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 
 		try {
 			const response = await axios.get(
-				`https://newsapi.org/v2/top-headlines?q=${
-					text ? text : "a"
-				}&from=${from}&to=${to}&sortBy=last&apiKey=${API_KEY}`
+				`https://newsapi.org/v2/top-headlines?q=${text ? text : "today"}
+				&from=${from}&to=${to}&sortBy=last&apiKey=${API_KEY}`
 			);
 
 			const data = response.data.articles.filter(
 				(el: Article) =>
 					el.description !== "[Removed]" && el.title !== "[Removed]"
 			);
-			return data;
+
+			return data.filter(
+				(_el: any, i: number, data: { [x: string]: { url: string } }) =>
+					data[i]?.url !== data[i + 1]?.url
+			);
 		} catch (error) {
 			console.error("Error fetching news:", error);
 			throw error;
