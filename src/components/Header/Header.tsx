@@ -1,9 +1,10 @@
+import React, { useMemo } from "react";
 import Calendar from "./Calendar";
+import { debounce } from "../../utils/debounce";
 import "./Header.css";
 
 interface HeaderProps {
 	text: string;
-	from: string;
 	to: string;
 	setText: React.Dispatch<React.SetStateAction<string>>;
 	setFrom: React.Dispatch<React.SetStateAction<string>>;
@@ -12,7 +13,6 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
 	text,
-	from,
 	to,
 	setText,
 	setFrom,
@@ -21,10 +21,13 @@ const Header: React.FC<HeaderProps> = ({
 	const submitHandler = (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 	};
+
+	const debouncedSetText = useMemo(() => debounce(setText, 300), [setText]);
+
 	return (
 		<form onSubmit={submitHandler} className="header">
 			<div>
-				<Calendar defaultValue={from} setDefaultValue={setFrom} />
+				<Calendar defaultValue={to} setDefaultValue={setFrom} />
 				<span> To </span>
 				<Calendar defaultValue={to} setDefaultValue={setTo} />
 			</div>
@@ -33,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({
 				className="header--search"
 				placeholder="Search..."
 				value={text}
-				onChange={e => setText(e.target.value)}
+				onChange={e => debouncedSetText(e.target.value)}
 			/>
 		</form>
 	);

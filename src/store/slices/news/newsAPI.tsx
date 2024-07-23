@@ -13,9 +13,9 @@ interface Article {
 	description: string;
 }
 
-// a4470fed925744239c6f02485bab219e , f648e8a4efc342cda618b31b28bd6884
+// a4470fed925744239c6f02485bab219e , f648e8a4efc342cda618b31b28bd6884, 94f7f94c6c554edeaad987ef8d9c3824
 
-const API_KEY = "a4470fed925744239c6f02485bab219e";
+const API_KEY = "94f7f94c6c554edeaad987ef8d9c3824";
 
 export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 	"news/fetchNews",
@@ -25,7 +25,7 @@ export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 				const requests = category.map(el =>
 					axios.get(
 						`https://newsapi.org/v2/top-headlines?q=${
-							text ? text : "a"
+							text ? text : "today"
 						}&country=us&category=${
 							el?.text
 						}&from=${from}&to=${to}&apiKey=${API_KEY}`
@@ -39,7 +39,7 @@ export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 
 				return combinedData;
 			} catch (error) {
-				console.error("Error fetching news:", error);
+				console.error(error);
 			}
 		}
 
@@ -59,7 +59,7 @@ export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 					data[i]?.url !== data[i + 1]?.url
 			);
 		} catch (error) {
-			console.error("Error fetching news:", error);
+			console.error(error);
 			throw error;
 		}
 	}
