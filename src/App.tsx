@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "./utils/hooks";
 import Loading from "./components/Loading/Loading";
 import Header from "./components/Header/Header";
 import Categories from "./components/Categories/Categories";
-import { delayForDemo } from "./delay";
+import { delayForDemo } from "./utils/delay";
 
 const Main = lazy(() => delayForDemo(import("./components/Main/Main")));
 
