@@ -25,7 +25,7 @@ export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 				const requests = category.map(el =>
 					axios.get(
 						`https://newsapi.org/v2/top-headlines?q=${
-							text ? text : "today"
+							text ? text : "a"
 						}&country=us&category=${
 							el?.text
 						}&from=${from}&to=${to}&apiKey=${API_KEY}`
@@ -37,7 +37,11 @@ export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 					response => response.data.articles
 				);
 
-				return combinedData;
+				const uniqueArticles = Array.from(
+					new Map(combinedData.map(article => [article.url, article])).values()
+				);
+
+				return uniqueArticles;
 			} catch (error) {
 				console.error(error);
 			}
@@ -45,8 +49,8 @@ export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 
 		try {
 			const response = await axios.get(
-				`https://newsapi.org/v2/top-headlines?q=${text ? text : "today"}
-				&from=${from}&to=${to}&sortBy=last&apiKey=${API_KEY}`
+				`https://newsapi.org/v2/top-headlines?q=${text ? text : "a"}
+				&from=${from}&to=${to}&sortBy=publishedAt&apiKey=${API_KEY}`
 			);
 
 			const data = response.data.articles.filter(
@@ -54,10 +58,13 @@ export const fetchNews = createAsyncThunk<Article[], FetchNewsParams>(
 					el.description !== "[Removed]" && el.title !== "[Removed]"
 			);
 
-			return data.filter(
-				(_el: any, i: number, data: { [x: string]: { url: string } }) =>
-					data[i]?.url !== data[i + 1]?.url
+			const uniqueArticles = Array.from(
+				new Map(
+					data.map((article: { url: string }) => [article.url, article])
+				).values()
 			);
+
+			return uniqueArticles;
 		} catch (error) {
 			console.error(error);
 			throw error;

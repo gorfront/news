@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, ChangeEvent, FormEvent } from "react";
 import Calendar from "./Calendar";
 import { debounce } from "../../utils/debounce";
 import "./Header.css";
@@ -18,11 +18,15 @@ const Header: React.FC<HeaderProps> = ({
 	setFrom,
 	setTo,
 }) => {
-	const submitHandler = (e: { preventDefault: () => void }) => {
+	const submitHandler = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 	};
 
 	const debouncedSetText = useMemo(() => debounce(setText, 300), [setText]);
+
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+		debouncedSetText(e.target.value);
+	};
 
 	return (
 		<form onSubmit={submitHandler} className="header">
@@ -36,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({
 				className="header--search"
 				placeholder="Search..."
 				value={text}
-				onChange={e => debouncedSetText(e.target.value)}
+				onChange={handleInputChange}
 			/>
 		</form>
 	);

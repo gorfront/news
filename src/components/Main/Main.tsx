@@ -15,13 +15,11 @@ interface MainProps {
 }
 
 const Main: React.FC<MainProps> = ({ news }) => {
-	let a = 2;
+	let a = 0;
 	return (
 		<div className="main">
 			{news.length ? (
-				news.map((el: NewsItem) => (
-					<MainItem {...el} key={++a} />
-				))
+				news.map((el: NewsItem) => <MainItem {...el} key={++a} />)
 			) : (
 				<h2>Oops. Not news yet :(</h2>
 			)}

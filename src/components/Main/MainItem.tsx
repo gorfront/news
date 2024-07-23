@@ -1,3 +1,4 @@
+import React from "react";
 import { NewsItem } from "./Main";
 import "./Main.css";
 
@@ -6,17 +7,16 @@ const MainItem: React.FC<NewsItem> = ({
 	urlToImage,
 	title,
 	publishedAt,
-	author,
+	author = "Unknown",
 }) => {
+	const fallbackImageUrl =
+		"https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
+
 	return (
 		<div className="mainItem">
 			<img
-				src={
-					urlToImage
-						? urlToImage
-						: "https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg"
-				}
-				alt="About News"
+				src={urlToImage || fallbackImageUrl}
+				alt="News"
 				className="mainItem--img"
 			/>
 			<h2 className="mainItem--title">{title}</h2>
@@ -29,7 +29,6 @@ const MainItem: React.FC<NewsItem> = ({
 					<span>Author:</span> {author ? author : "Unknown"}
 				</p>
 			</div>
-			<p className="mainItem--author"></p>
 		</div>
 	);
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useCallback, useState, memo } from "react";
 import "./Categories.css";
 
 interface CategoryItem {
@@ -11,7 +11,7 @@ interface CategoryProps {
 	setCategory: React.Dispatch<React.SetStateAction<Record<string, string>[]>>;
 }
 
-const Categories: React.FC<CategoryProps> = ({ setCategory }) => {
+const Categories: React.FC<CategoryProps> = memo(({ setCategory }) => {
 	const [categoryItems, setCategoryItems] = useState<CategoryItem[]>([
 		{ active: false, id: "0", text: "business" },
 		{ active: false, id: "1", text: "entertainment" },
@@ -22,21 +22,24 @@ const Categories: React.FC<CategoryProps> = ({ setCategory }) => {
 		{ active: false, id: "6", text: "technology" },
 	]);
 
-	const clickHandler = (id: string) => {
-		setCategoryItems(prev => {
-			const updatedItems = prev.map(item =>
-				item.id === id ? { ...item, active: !item.active } : item
-			);
+	const clickHandler = useCallback(
+		(id: string) => {
+			setCategoryItems(prev => {
+				const updatedItems = prev.map(item =>
+					item.id === id ? { ...item, active: !item.active } : item
+				);
 
-			setCategory(
-				updatedItems
-					.filter(item => item.active)
-					.map(item => ({ text: item.text }))
-			);
+				setCategory(
+					updatedItems
+						.filter(item => item.active)
+						.map(item => ({ text: item.text }))
+				);
 
-			return updatedItems;
-		});
-	};
+				return updatedItems;
+			});
+		},
+		[setCategory]
+	);
 
 	return (
 		<ul className="category__list">
@@ -51,6 +54,6 @@ const Categories: React.FC<CategoryProps> = ({ setCategory }) => {
 			))}
 		</ul>
 	);
-};
+});
 
 export default Categories;
