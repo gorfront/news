@@ -1,14 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchNews } from "./newsAPI";
+import { NewsItem } from "../../../components/Main/Main";
 
 const newsSlice = createSlice({
 	name: "news",
-	initialState: [],
+	initialState: [] as NewsItem[],
 	reducers: {},
 	extraReducers: build => {
-		build.addCase(fetchNews.fulfilled, (_state, { payload }) => {
-			return payload;
-		});
+		build.addCase(
+			fetchNews.fulfilled.type,
+			(_state, action: PayloadAction<NewsItem[]>) => {
+				return action.payload;
+			}
+		);
 	},
 });
 
